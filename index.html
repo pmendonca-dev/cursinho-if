@@ -10,7 +10,7 @@
 <meta name="description" content="Cursinho online preparatório para a seleção dos Institutos Federais, com simulados, banco de questões e apoio de IA por R$ 29,90 ao mês. Entre na lista de espera.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,300&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
 <style>
 :root{
   --verde:#2F9E41;
@@ -106,16 +106,32 @@ section{padding:clamp(3.5rem,8vw,6.5rem) 0}
 .cab-secao{display:flex;gap:1.6rem;align-items:flex-end;margin-bottom:2.6rem;flex-wrap:wrap}
 .cab-secao p{flex:1 1 320px}
 
-/* para quem */
-.para-quem{background:var(--verde-escuro);color:#fff}
-.para-quem h2{color:#fff}
-.para-quem .lead{color:#cfe6d3}
-.perfis{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid rgba(255,255,255,.25)}
-.perfil{padding:1.8rem 1.6rem 1.8rem 0;border-bottom:1px solid rgba(255,255,255,.25)}
-.perfil+.perfil{padding-left:1.6rem;border-left:1px solid rgba(255,255,255,.25)}
-.perfil h3{margin-bottom:.6rem}
-.perfil p{color:#cfe6d3;font-size:1rem}
-.perfil .tag{display:inline-block;margin-bottom:.9rem;font-weight:700;font-size:.85rem;background:var(--vermelho);color:#fff;border-radius:6px;padding:.15rem .6rem}
+/* para quem: foto à esquerda, conteúdo à direita */
+.para-quem{--fundo:#081B12;--claro:#E4D8A2;--ouro:#D8B365;--creme:#F8F5E8;--serifa:"Newsreader",Georgia,"Times New Roman",serif;font-family:"DM Sans",var(--texto);padding:0;color:var(--creme);background-color:var(--fundo);background-image:radial-gradient(90% 120% at 100% 0%,rgba(15,79,43,.45) 0%,rgba(0,0,0,0) 60%);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);overflow:hidden}
+.pq-foto{position:relative;min-height:100%;background:linear-gradient(180deg,rgba(8,27,18,.25),rgba(8,27,18,.25)),url("assets/hero.jpg");background-size:cover;background-position:82% 30%;background-repeat:no-repeat;-webkit-mask-image:linear-gradient(90deg,#000 50%,transparent 100%);mask-image:linear-gradient(90deg,#000 50%,transparent 100%)}
+.pq-conteudo{padding:clamp(3.5rem,8vw,6.5rem) clamp(1.5rem,5vw,4.5rem) clamp(3.5rem,8vw,6.5rem) 0;max-width:46rem}
+.pq-eyebrow{font:500 13px "DM Sans",var(--texto);letter-spacing:.2em;text-transform:uppercase;color:var(--claro)}
+.para-quem h2.titulo-palavras{font:400 clamp(2.1rem,3.6vw,3rem)/1.08 var(--serifa);letter-spacing:-.012em;color:var(--creme);max-width:none;text-wrap:balance;margin:.9rem 0 0}
+.pq-filete{display:block;width:72px;height:2px;background:var(--ouro);margin:1.4rem 0 1.5rem}
+.pq-intro{font-size:18px;line-height:1.6;color:rgba(248,245,232,.88);max-width:38rem}
+.pq-lista{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:0 2.2rem;margin-top:2.2rem}
+.pq-lista li{display:grid;grid-template-columns:2.6rem minmax(0,1fr);gap:1rem;padding:1.2rem 0 1.4rem;border-top:1px solid rgba(248,245,232,.2)}
+.pq-num{font:italic 300 1.9rem/1 var(--serifa);color:var(--ouro)}
+.pq-lista h3{font:400 22px/1.15 var(--serifa);letter-spacing:0;color:var(--creme);margin-bottom:.55rem}
+.pq-lista p{font-size:15px;line-height:1.7;color:rgba(248,245,232,.78)}
+.pq-cta{display:inline-flex;align-items:center;gap:.8rem;margin-top:2rem;padding:.85rem 1.6rem;background:#F7F0E0;color:var(--fundo);font:600 18px "DM Sans",var(--texto);text-decoration:none;border-radius:4px;transition:background .2s}
+.pq-cta svg{width:20px;height:20px;transition:transform .2s}
+.pq-cta:hover{background:#fff}
+.pq-cta:hover svg{transform:translateX(4px)}
+@media (prefers-reduced-motion:no-preference){
+  .js .titulo-palavras .p{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.14em;margin-bottom:-.14em}
+  .js .titulo-palavras .p>span{display:inline-block;transform:translateY(110%);transition:transform .85s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--i) * .07s + .1s)}
+  .js .para-quem.entrou .titulo-palavras .p>span{transform:none}
+  .js .para-quem .pq-bloco{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease;transition-delay:var(--d,0s)}
+  .js .para-quem.entrou .pq-bloco{opacity:1;transform:none}
+  .js .para-quem .pq-foto{opacity:0;transition:opacity 1.1s ease}
+  .js .para-quem.entrou .pq-foto{opacity:1}
+}
 
 /* ferramentas */
 .ferramentas .lista{display:grid;grid-template-columns:repeat(2,1fr);gap:1.4rem}
@@ -234,8 +250,10 @@ footer.rodape{background:var(--verde-escuro);color:#cfe6d3;padding:2.8rem 0;font
 
 @media (max-width:900px){
   .hero .wrap,.motivos,.lista-espera .wrap{grid-template-columns:1fr}
-  .perfis{grid-template-columns:1fr}
-  .perfil,.perfil+.perfil{padding:1.5rem 0;border-left:0}
+  .para-quem{grid-template-columns:1fr}
+  .pq-foto{min-height:240px;background-position:80% 25%;background:linear-gradient(180deg,rgba(8,27,18,.25),rgba(8,27,18,.25)),url("assets/hero.jpg") 80% 25%/cover no-repeat;-webkit-mask-image:linear-gradient(180deg,#000 45%,transparent 100%);mask-image:linear-gradient(180deg,#000 45%,transparent 100%)}
+  .pq-conteudo{padding:2rem 20px 3.5rem;max-width:none}
+  .pq-lista{grid-template-columns:1fr}
   .ferramentas .lista{grid-template-columns:1fr}
   .planos{grid-template-columns:1fr}
   .topo nav a:not(.btn){display:none}
@@ -310,28 +328,38 @@ footer.rodape{background:var(--verde-escuro);color:#cfe6d3;padding:2.8rem 0;font
 </section>
 
 <section class="para-quem" id="para-quem">
-  <div class="wrap">
-    <div class="cab-secao">
-      <h2>Feito para quem sonha com a vaga no IF</h2>
-      <p class="lead">A seleção dos Institutos Federais é concorrida e cobra conteúdo específico. O cursinho é pensado para três perfis de estudante.</p>
-    </div>
-    <div class="perfis">
-      <article class="perfil">
-        <span class="tag">9º ano</span>
-        <h3>Quem vai prestar o ensino técnico integrado</h3>
-        <p>Você está no fim do ensino fundamental e quer estudar no IF junto com o ensino médio. Revisamos o conteúdo cobrado, de Português e Matemática, e treinamos o ritmo de prova.</p>
-      </article>
-      <article class="perfil">
-        <span class="tag">Ensino médio</span>
-        <h3>Quem busca o curso técnico subsequente</h3>
-        <p>Você já terminou ou está terminando o ensino médio e quer uma formação técnica gratuita. Estudamos o conteúdo que mais cai e como interpretar cada edital.</p>
-      </article>
-      <article class="perfil">
-        <span class="tag">Escola pública</span>
-        <h3>Quem precisa de preparo acessível</h3>
-        <p>Cursinho caro não pode ser a barreira entre você e uma vaga pública. Aqui, o preço cabe no orçamento e o estudo cabe na sua rotina, pelo celular.</p>
-      </article>
-    </div>
+  <div class="pq-foto" aria-hidden="true"></div>
+  <div class="pq-conteudo">
+    <p class="pq-eyebrow pq-bloco">Para quem é o cursinho</p>
+    <h2 class="titulo-palavras">Feito para quem sonha com a vaga no IF</h2>
+    <span class="pq-filete pq-bloco" style="--d:.5s" aria-hidden="true"></span>
+    <p class="pq-intro pq-bloco" style="--d:.6s">A seleção dos Institutos Federais é concorrida e cobra conteúdo específico. O cursinho é pensado para três perfis de estudante.</p>
+    <ol class="pq-lista">
+      <li class="pq-bloco" style="--d:.75s">
+        <span class="pq-num" aria-hidden="true">01</span>
+        <div>
+          <h3>Quem vai prestar o ensino técnico integrado</h3>
+          <p>Você está no fim do ensino fundamental e quer estudar no IF junto com o ensino médio. Revisamos o conteúdo cobrado, de Português e Matemática, e treinamos o ritmo de prova.</p>
+        </div>
+      </li>
+      <li class="pq-bloco" style="--d:.9s">
+        <span class="pq-num" aria-hidden="true">02</span>
+        <div>
+          <h3>Quem busca o curso técnico subsequente</h3>
+          <p>Você já terminou ou está terminando o ensino médio e quer uma formação técnica gratuita. Estudamos o conteúdo que mais cai e como interpretar cada edital.</p>
+        </div>
+      </li>
+      <li class="pq-bloco" style="--d:1.05s">
+        <span class="pq-num" aria-hidden="true">03</span>
+        <div>
+          <h3>Quem precisa de preparo acessível</h3>
+          <p>Cursinho caro não pode ser a barreira entre você e uma vaga pública. Aqui, o preço cabe no orçamento e o estudo cabe na sua rotina, pelo celular.</p>
+        </div>
+      </li>
+    </ol>
+    <a class="pq-cta pq-bloco" style="--d:1.2s" href="#lista-espera">Quero entrar na lista de espera
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
   </div>
 </section>
 
@@ -612,6 +640,27 @@ footer.rodape{background:var(--verde-escuro);color:#cfe6d3;padding:2.8rem 0;font
   });
 })();
 
+/* ---------- Seção "Para quem": título palavra por palavra e blocos em sequência ---------- */
+(function(){
+  var sec=document.getElementById('para-quem');
+  var h2=sec.querySelector('.titulo-palavras');
+  var texto=h2.textContent.trim();
+  var palavras=texto.split(' ');
+  h2.setAttribute('aria-label',texto);
+  h2.textContent='';
+  palavras.forEach(function(w,i){
+    var fora=document.createElement('span');fora.className='p';fora.setAttribute('aria-hidden','true');
+    var dentro=document.createElement('span');dentro.textContent=w;dentro.style.setProperty('--i',i);
+    fora.appendChild(dentro);h2.appendChild(fora);
+    if(i<palavras.length-1)h2.appendChild(document.createTextNode(' '));
+  });
+  if(!('IntersectionObserver' in window)){sec.classList.add('entrou');return;}
+  var io=new IntersectionObserver(function(itens){
+    if(itens[0].isIntersecting){sec.classList.add('entrou');io.disconnect();}
+  },{threshold:.25});
+  io.observe(sec);
+})();
+
 /* ---------- Textos aparecem ao entrar na tela ---------- */
 (function(){
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window)){return;}
@@ -620,8 +669,9 @@ footer.rodape{background:var(--verde-escuro);color:#cfe6d3;padding:2.8rem 0;font
     itens.forEach(function(i){
       if(i.isIntersecting){i.target.classList.add('entrou');io.unobserve(i.target);}
     });
-  },{threshold:.15,rootMargin:'0px 0px -6% 0px'});
+  },{threshold:.15});
   alvos.forEach(function(el){
+    if(el.closest('.para-quem'))return;                  // essa seção tem animação própria
     var irmaos=el.parentNode?Array.prototype.indexOf.call(el.parentNode.children,el):0;
     el.style.setProperty('--atraso',Math.min(irmaos,5)*0.08+'s');
     el.classList.add('revela');

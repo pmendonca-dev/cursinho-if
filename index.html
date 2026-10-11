@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
+<link rel="preload" as="image" href="assets/hero.jpg" fetchpriority="high">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cursinho para Institutos Federais por R$ 29,90 ao mês</title>
 <meta name="description" content="Cursinho online preparatório para a seleção dos Institutos Federais, com simulados, banco de questões e apoio de IA por R$ 29,90 ao mês. Entre na lista de espera.">
@@ -53,10 +54,11 @@ p{max-width:62ch}
 .btn-contorno:hover{background:var(--verde-escuro);color:#fff}
 
 /* topo */
-.topo{position:sticky;top:0;z-index:20;background:rgba(246,250,244,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--linha)}
+.topo{position:sticky;top:0;z-index:20;background:rgba(246,250,244,.92);backdrop-filter:blur(8px);box-shadow:0 1px 0 var(--linha)}
 .topo .wrap{display:flex;align-items:center;justify-content:space-between;height:68px;gap:1rem}
 .marca{display:flex;align-items:center;gap:.7rem;text-decoration:none}
-.marca svg{width:38px;height:38px}
+.marca .logo-if{height:40px;width:auto;flex:none}
+.marca .logo-rodape{height:36px;background:#fff;padding:6px 8px;box-sizing:content-box;border-radius:8px}
 .marca b{font:800 1.15rem var(--titulo);letter-spacing:-.01em;line-height:1.1}
 .marca small{display:block;font:500 .78rem var(--texto);color:var(--tinta-suave);letter-spacing:0}
 .topo nav{display:flex;gap:1.6rem;align-items:center}
@@ -65,13 +67,20 @@ p{max-width:62ch}
 .topo .btn{padding:.6rem 1.2rem;font-size:.95rem}
 
 /* hero */
-.hero{padding:clamp(2.5rem,6vw,5rem) 0 clamp(3rem,7vw,6rem);background:
-  linear-gradient(180deg,var(--papel) 0,var(--papel) 100%)}
+.hero{padding:clamp(2.5rem,6vw,5rem) 0 clamp(4rem,8vw,7rem);color:#fff;background-color:var(--verde-escuro);background-image:
+  linear-gradient(180deg,rgba(246,250,244,0) 88%,var(--papel) 100%),
+  linear-gradient(100deg,rgba(14,74,42,.94) 0%,rgba(14,74,42,.86) 45%,rgba(14,74,42,.5) 100%),
+  url("assets/hero.jpg");
+  background-size:cover;background-position:center;background-repeat:no-repeat}
 .hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
-.hero h1{font-size:clamp(2.5rem,6vw,4.6rem);margin:1.2rem 0 1.4rem;color:var(--verde-escuro)}
-.hero h1 em{font-style:normal;background:linear-gradient(transparent 62%,rgba(200,25,31,.22) 62%);padding:0 .1em}
+.hero h1{font-size:clamp(2.5rem,6vw,4.6rem);margin:1.2rem 0 1.4rem;color:#fff}
+.hero h1 em{font-style:normal;background:linear-gradient(transparent 62%,rgba(200,25,31,.85) 62%);padding:0 .1em}
+.hero .lead{color:#eaf5ea}
+.hero .barras i:nth-child(1),.hero .barras i:nth-child(2),.hero .barras i:nth-child(4){background:#fff}
 .hero .acoes{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:2rem}
-.hero .nota{margin-top:1.1rem;font-size:.95rem;color:var(--tinta-suave)}
+.hero .btn-contorno{color:#fff;box-shadow:inset 0 0 0 2px #fff}
+.hero .btn-contorno:hover{background:#fff;color:var(--verde-escuro)}
+.hero .nota{margin-top:1.1rem;font-size:.95rem;color:#eaf5ea}
 
 /* cartão-resposta */
 .cartao{background:var(--branco);border:2px solid var(--verde-escuro);border-radius:var(--raio);padding:1.4rem 1.4rem 1.2rem;box-shadow:10px 10px 0 var(--verde);position:relative;transform:rotate(1.2deg)}
@@ -88,7 +97,7 @@ p{max-width:62ch}
 .cartao footer{margin-top:1.1rem;padding-top:.9rem;border-top:2px dashed var(--linha);display:flex;justify-content:space-between;align-items:center;gap:.6rem;font-size:.9rem}
 .cartao footer strong{font:800 1.4rem var(--titulo);color:var(--verde-escuro)}
 .cartao footer span{color:var(--tinta-suave)}
-.dica-cartao{margin-top:1.6rem;font-size:.85rem;color:var(--tinta-suave);text-align:center}
+.dica-cartao{margin:1.6rem auto 0;width:fit-content;max-width:100%;font-size:.85rem;color:#fff;text-align:center;background:rgba(14,74,42,.92);padding:.4rem .9rem;border-radius:999px}
 
 /* seções */
 section{padding:clamp(3.5rem,8vw,6.5rem) 0}
@@ -193,6 +202,12 @@ footer.rodape{background:var(--verde-escuro);color:#cfe6d3;padding:2.8rem 0;font
 .rodape .marca small{color:#cfe6d3}
 .rodape .legal{max-width:80ch;font-size:.85rem;opacity:.9}
 
+/* voltar ao topo */
+.topo-btn{position:fixed;right:20px;bottom:20px;z-index:30;width:52px;height:52px;border-radius:50%;border:0;background:var(--vermelho);color:#fff;cursor:pointer;display:grid;place-items:center;box-shadow:4px 4px 0 var(--verde-escuro);opacity:0;visibility:hidden;transform:translateY(12px);transition:opacity .2s,transform .2s,visibility .2s,background .15s}
+.topo-btn.visivel{opacity:1;visibility:visible;transform:none}
+.topo-btn:hover{background:#a81419}
+.topo-btn svg{width:22px;height:22px}
+
 @media (max-width:900px){
   .hero .wrap,.motivos,.lista-espera .wrap{grid-template-columns:1fr}
   .perfis{grid-template-columns:1fr}
@@ -201,6 +216,10 @@ footer.rodape{background:var(--verde-escuro);color:#cfe6d3;padding:2.8rem 0;font
   .planos{grid-template-columns:1fr}
   .topo nav a:not(.btn){display:none}
   .cartao{transform:none}
+  .hero{background-image:
+    linear-gradient(180deg,rgba(246,250,244,0) 90%,var(--papel) 100%),
+    linear-gradient(180deg,rgba(14,74,42,.9) 0%,rgba(14,74,42,.82) 100%),
+    url("assets/hero.jpg")}
 }
 @media (max-width:480px){
   .duas{grid-template-columns:1fr}
@@ -218,13 +237,7 @@ footer.rodape{background:var(--verde-escuro);color:#cfe6d3;padding:2.8rem 0;font
 <header class="topo">
   <div class="wrap">
     <a class="marca" href="#inicio" aria-label="Cursinho IF, início">
-      <!-- Marca provisória inspirada nas barras da identidade dos IFs. Troque pelo logo oficial quando tiver autorização de uso. -->
-      <svg viewBox="0 0 48 48" aria-hidden="true">
-        <rect x="4" y="4" width="9" height="40" rx="2" fill="#2F9E41"/>
-        <rect x="16" y="4" width="9" height="28" rx="2" fill="#2F9E41"/>
-        <rect x="28" y="4" width="9" height="40" rx="2" fill="#C8191F"/>
-        <rect x="40" y="4" width="5" height="18" rx="2" fill="#2F9E41"/>
-      </svg>
+      <img class="logo-if" src="assets/logo-if.png" alt="Logo do Instituto Federal" width="38" height="40">
       <span><b>Cursinho IF</b><small>Preparatório para Institutos Federais</small></span>
     </a>
     <nav aria-label="Principal">
@@ -239,7 +252,7 @@ footer.rodape{background:var(--verde-escuro);color:#cfe6d3;padding:2.8rem 0;font
 
 <main id="inicio">
 
-<section class="hero" style="padding-bottom:clamp(3rem,7vw,6rem)">
+<section class="hero">
   <div class="wrap">
     <div>
       <div class="barras" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
@@ -535,12 +548,7 @@ footer.rodape{background:var(--verde-escuro);color:#cfe6d3;padding:2.8rem 0;font
 <footer class="rodape">
   <div class="wrap">
     <div class="marca">
-      <svg viewBox="0 0 48 48" aria-hidden="true">
-        <rect x="4" y="4" width="9" height="40" rx="2" fill="#2F9E41"/>
-        <rect x="16" y="4" width="9" height="28" rx="2" fill="#2F9E41"/>
-        <rect x="28" y="4" width="9" height="40" rx="2" fill="#C8191F"/>
-        <rect x="40" y="4" width="5" height="18" rx="2" fill="#2F9E41"/>
-      </svg>
+      <img class="logo-if logo-rodape" src="assets/logo-if.png" alt="Logo do Instituto Federal" width="34" height="36">
       <span><b>Cursinho IF</b><small>Preparatório para Institutos Federais</small></span>
     </div>
     <p class="legal">Projeto independente de preparação para processos seletivos. Não temos vínculo oficial com os Institutos Federais, com o Ministério da Educação ou com a Rede Federal de Educação Profissional. As cores verde, branca e vermelha são usadas apenas como referência visual ao universo dos IFs.</p>
@@ -548,7 +556,23 @@ footer.rodape{background:var(--verde-escuro);color:#cfe6d3;padding:2.8rem 0;font
   </div>
 </footer>
 
+<button class="topo-btn" id="voltar-topo" type="button" aria-label="Voltar ao topo da página">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
 <script>
+/* ---------- Voltar ao topo ---------- */
+(function(){
+  var btn=document.getElementById('voltar-topo');
+  function checar(){btn.classList.toggle('visivel',window.scrollY>400);}
+  window.addEventListener('scroll',checar,{passive:true});
+  btn.addEventListener('click',function(){
+    var reduz=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({top:0,behavior:reduz?'auto':'smooth'});
+  });
+  checar();
+})();
+
 /* ---------- Cartão-resposta interativo ---------- */
 (function(){
   var letras=['A','B','C','D','E'];

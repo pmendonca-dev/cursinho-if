@@ -2,6 +2,8 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
+<script>document.documentElement.classList.add('js')</script>
+<link rel="icon" type="image/png" href="assets/logo-if.png">
 <link rel="preload" as="image" href="assets/hero.jpg" fetchpriority="high">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cursinho para Institutos Federais por R$ 29,90 ao mês</title>
@@ -118,8 +120,7 @@ section{padding:clamp(3.5rem,8vw,6.5rem) 0}
 /* ferramentas */
 .ferramentas .lista{display:grid;grid-template-columns:repeat(2,1fr);gap:1.4rem}
 .ferr{background:var(--branco);border:1px solid var(--linha);border-radius:var(--raio);padding:1.8rem;border-left:8px solid var(--verde)}
-.ferr:nth-child(2){border-left-color:var(--vermelho)}
-.ferr:nth-child(3){border-left-color:var(--vermelho)}
+.ferr:nth-child(4n+2),.ferr:nth-child(4n+3){border-left-color:var(--vermelho)}
 .ferr h3{margin-bottom:.6rem}
 .ferr p{color:var(--tinta-suave)}
 .ferr ul{margin-top:1rem;list-style:none;display:grid;gap:.4rem;font-size:.98rem}
@@ -208,6 +209,27 @@ footer.rodape{background:var(--verde-escuro);color:#cfe6d3;padding:2.8rem 0;font
 .topo-btn:hover{background:#a81419}
 .topo-btn svg{width:22px;height:22px}
 
+
+/* carrossel de ferramentas (só com JS; sem JS continua a grade de 2 colunas) */
+.ferramentas{overflow-x:clip}
+.js .ferramentas .carrossel{margin-inline:calc(50% - 50vw);overflow:hidden;padding:.4rem 0;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 4%,#000 96%,transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 4%,#000 96%,transparent 100%)}
+.js .ferramentas .lista{display:flex;gap:0;width:max-content;animation:rodar 48s linear infinite}
+.js .ferramentas .ferr{flex:0 0 min(686px,calc(100vw - 40px));margin-right:1.4rem}
+.js .ferramentas .carrossel:hover .lista,
+.js .ferramentas .carrossel:focus-within .lista,
+.js .ferramentas.pausado .lista{animation-play-state:paused}
+@keyframes rodar{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.pausa{display:block;margin:1.2rem 0 0 auto;font:600 .9rem var(--texto);color:var(--verde-escuro);background:transparent;border:2px solid var(--verde-escuro);border-radius:999px;padding:.4rem 1rem;cursor:pointer}
+.pausa:hover{background:var(--verde-escuro);color:#fff}
+
+/* textos aparecem ao entrar na tela */
+@media (prefers-reduced-motion:no-preference){
+  .js .revela{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;transition-delay:var(--atraso,0s)}
+  .js .revela.entrou{opacity:1;transform:none}
+}
+
 @media (max-width:900px){
   .hero .wrap,.motivos,.lista-espera .wrap{grid-template-columns:1fr}
   .perfis{grid-template-columns:1fr}
@@ -229,6 +251,9 @@ footer.rodape{background:var(--verde-escuro);color:#cfe6d3;padding:2.8rem 0;font
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *{transition:none!important}
+  .js .ferramentas .lista{animation:none}
+  .js .ferramentas .carrossel{overflow-x:auto;-webkit-mask-image:none;mask-image:none}
+  .js .ferramentas .ferr.dup{display:none}
 }
 </style>
 </head>
@@ -314,6 +339,7 @@ footer.rodape{background:var(--verde-escuro);color:#cfe6d3;padding:2.8rem 0;font
       <h2>Treino de prova de verdade, com IA do seu lado</h2>
       <p class="lead">Quem passa é quem pratica. Por isso o cursinho é construído em torno de simulados e questões, com a IA ajudando a entender onde você erra.</p>
     </div>
+    <div class="carrossel">
     <div class="lista">
       <article class="ferr">
         <h3>Simulados no estilo da seleção</h3>
@@ -352,6 +378,8 @@ footer.rodape{background:var(--verde-escuro);color:#cfe6d3;padding:2.8rem 0;font
         </ul>
       </article>
     </div>
+    </div>
+    <button class="pausa" id="pausa-carrossel" type="button" aria-pressed="false" hidden>Pausar movimento</button>
   </div>
 </section>
 
@@ -561,6 +589,41 @@ footer.rodape{background:var(--verde-escuro);color:#cfe6d3;padding:2.8rem 0;font
 </button>
 
 <script>
+/* ---------- Carrossel de ferramentas: duplica os cartões para o loop ficar contínuo ---------- */
+(function(){
+  var sec=document.querySelector('.ferramentas');
+  var lista=sec.querySelector('.lista');
+  var btn=document.getElementById('pausa-carrossel');
+  Array.prototype.slice.call(lista.children).forEach(function(c){
+    var d=c.cloneNode(true);
+    d.classList.add('dup');
+    d.setAttribute('aria-hidden','true');
+    lista.appendChild(d);
+  });
+  btn.hidden=false;
+  btn.addEventListener('click',function(){
+    var p=sec.classList.toggle('pausado');
+    btn.setAttribute('aria-pressed',p);
+    btn.textContent=p?'Retomar movimento':'Pausar movimento';
+  });
+})();
+
+/* ---------- Textos aparecem ao entrar na tela ---------- */
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window)){return;}
+  var alvos=document.querySelectorAll('main h1,main h2,main h3,main p,main li,main summary,main label,main .tag,main .preco,main caption,.rodape p');
+  var io=new IntersectionObserver(function(itens){
+    itens.forEach(function(i){
+      if(i.isIntersecting){i.target.classList.add('entrou');io.unobserve(i.target);}
+    });
+  },{threshold:.15,rootMargin:'0px 0px -6% 0px'});
+  alvos.forEach(function(el){
+    var irmaos=el.parentNode?Array.prototype.indexOf.call(el.parentNode.children,el):0;
+    el.style.setProperty('--atraso',Math.min(irmaos,5)*0.08+'s');
+    el.classList.add('revela');
+    io.observe(el);
+  });
+})();
 /* ---------- Voltar ao topo ---------- */
 (function(){
   var btn=document.getElementById('voltar-topo');

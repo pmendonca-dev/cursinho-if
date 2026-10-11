@@ -195,6 +195,8 @@ form .btn{width:100%}
 .ok h3{font-size:1.6rem;color:var(--verde-escuro);margin-bottom:.5rem}
 .ok p{margin-inline:auto;color:var(--tinta-suave)}
 .erro-form{color:var(--vermelho);font-weight:600;font-size:.92rem;margin-bottom:1rem;display:none}
+.erro-campo{color:var(--vermelho);font-weight:600;font-size:.88rem;line-height:1.35}
+input[aria-invalid="true"]{border-color:var(--vermelho);background:#fff}
 
 /* rodapé */
 footer.rodape{background:var(--verde-escuro);color:#cfe6d3;padding:2.8rem 0;font-size:.92rem}
@@ -512,7 +514,9 @@ footer.rodape{background:var(--verde-escuro);color:#cfe6d3;padding:2.8rem 0;font
             </div>
             <div class="campo">
               <label for="whatsapp">WhatsApp com DDD</label>
-              <input id="whatsapp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="(00) 00000-0000" required>
+              <input id="whatsapp" name="whatsapp" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="(00) 00000-0000" maxlength="15" required aria-describedby="whatsapp-erro"
+                pattern="\((1[1-9]|2[12478]|3[1-578]|4[1-9]|5[1345]|6[1-9]|7[134579]|8[1-9]|9[1-9])\) 9[0-9]{4}-[0-9]{4}" title="Celular com DDD, como (11) 98765-4321">
+              <p class="erro-campo" id="whatsapp-erro" hidden></p>
             </div>
           </div>
           <div class="duas">
@@ -611,7 +615,7 @@ footer.rodape{background:var(--verde-escuro);color:#cfe6d3;padding:2.8rem 0;font
 /* ---------- Textos aparecem ao entrar na tela ---------- */
 (function(){
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window)){return;}
-  var alvos=document.querySelectorAll('main h1,main h2,main h3,main p,main li,main summary,main label,main .tag,main .preco,main caption,.rodape p');
+  var alvos=document.querySelectorAll('main h1,main h2,main h3,main p:not(.erro-campo):not(.erro-form),main li,main summary,main label,main .tag,main .preco,main caption,.rodape p');
   var io=new IntersectionObserver(function(itens){
     itens.forEach(function(i){
       if(i.isIntersecting){i.target.classList.add('entrou');io.unobserve(i.target);}
@@ -679,16 +683,86 @@ footer.rodape{background:var(--verde-escuro);color:#cfe6d3;padding:2.8rem 0;font
   });
 })();
 
-/* ---------- Máscara simples de WhatsApp ---------- */
-(function(){
+/* ---------- WhatsApp: máscara e validação de celular brasileiro ---------- */
+/* DDDs em uso no Brasil: 11-19, 21, 22, 24, 27, 28, 31-35, 37, 38, 41-49, 51, 53-55, 61-69, 71, 73-75, 77, 79, 81-89 e 91-99. */
+var WHATS=(function(){
   var campo=document.getElementById('whatsapp');
-  campo.addEventListener('input',function(){
-    var d=campo.value.replace(/\D/g,'').slice(0,11),s='';
+  var aviso=document.getElementById('whatsapp-erro');
+  var DDDS=/^(1[1-9]|2[12478]|3[1-578]|4[1-9]|5[1345]|6[1-9]|7[134579]|8[1-9]|9[1-9])$/;
+  var anterior='';
+
+  function soDigitos(t){return t.replace(/\D/g,'');}
+  function contar(s,ate){return soDigitos(s.slice(0,ate)).length;}
+  function formatar(d){
+    var s='';
     if(d.length>0)s='('+d.slice(0,2);
-    if(d.length>=3)s+=') '+d.slice(2,d.length>10?7:6);
-    if(d.length>(d.length>10?7:6))s+='-'+d.slice(d.length>10?7:6);
-    campo.value=s;
+    if(d.length>2)s+=') '+d.slice(2,7);
+    if(d.length>7)s+='-'+d.slice(7);
+    return s;
+  }
+  function posicao(s,n){            // índice logo depois do n-ésimo dígito
+    if(n<=0)return 0;
+    for(var i=0,c=0;i<s.length;i++){if(/\d/.test(s[i])&&++c===n)return i+1;}
+    return s.length;
+  }
+  function mensagem(d){             // '' quando o número é um celular válido
+    var padrao='Digite um celular com DDD, como (11) 98765-4321';
+    if(d.length===10&&d[2]!=='9')return 'Telefone fixo não serve. Digite um celular com DDD, como (11) 98765-4321';
+    if(d.length!==11)return padrao;
+    if(!DDDS.test(d.slice(0,2)))return 'DDD inválido. '+padrao;
+    if(d[2]!=='9')return 'O celular começa com 9 depois do DDD. '+padrao;
+    if(/^(\d)\1{7}$/.test(d.slice(3)))return 'Esse número parece repetido. '+padrao;
+    return '';
+  }
+  function mostrar(){
+    var m=mensagem(soDigitos(campo.value));
+    aviso.textContent=m;aviso.hidden=!m;
+    if(m)campo.setAttribute('aria-invalid','true');else campo.removeAttribute('aria-invalid');
+    return !m;
+  }
+  function sincronizar(){            // mantém a validade do navegador igual à regra acima
+    var d=soDigitos(campo.value);
+    campo.setCustomValidity(d.length?mensagem(d):'');
+    if(!aviso.hidden||campo.getAttribute('aria-invalid')){ if(!mensagem(d))mostrar(); }
+  }
+  function aplicar(d,n){
+    d=d.slice(0,11);
+    var s=formatar(d);
+    campo.value=s;anterior=d;
+    var pos=posicao(s,Math.min(n,d.length));
+    try{campo.setSelectionRange(pos,pos);}catch(_){}
+    sincronizar();
+  }
+  function semPrefixo(txt,colado){    // tira +55 / 55 de números colados
+    var d=soDigitos(txt);
+    if(/^\s*\+/.test(txt)&&d.indexOf('55')===0&&d.length>11)d=d.slice(2);
+    else if(colado&&d.length>11&&d.indexOf('55')===0)d=d.slice(2);
+    if(colado&&d.length===12&&d[0]==='0')d=d.slice(1);   // 0 de operadora
+    return d;
+  }
+
+  campo.addEventListener('input',function(e){
+    var raw=campo.value,tipo=e.inputType||'';
+    var n=contar(raw,campo.selectionStart==null?raw.length:campo.selectionStart);
+    var d=semPrefixo(raw,false);
+    if(d.length!==soDigitos(raw).length)n=d.length;      // prefixo removido: cursor no fim
+    if(anterior.length&&d.length===anterior.length){     // só um símbolo da máscara foi apagado
+      if(tipo==='deleteContentBackward'&&n>0){d=d.slice(0,n-1)+d.slice(n);n--;}
+      else if(tipo==='deleteContentForward'){d=d.slice(0,n)+d.slice(n+1);}
+    }
+    aplicar(d,n);
   });
+  campo.addEventListener('paste',function(e){
+    var cb=e.clipboardData||window.clipboardData;if(!cb)return;
+    e.preventDefault();
+    var ini=campo.selectionStart||0,fim=campo.selectionEnd||0,v=campo.value;
+    var antes=soDigitos(v.slice(0,ini)),depois=soDigitos(v.slice(fim));
+    var novo=semPrefixo(cb.getData('text'),true);
+    if(!antes&&!depois)aplicar(novo,11);
+    else aplicar(antes+novo+depois,(antes+novo).length);
+  });
+  campo.addEventListener('blur',function(){if(campo.value)mostrar();});
+  return {validar:function(){sincronizar();return mostrar();},campo:campo,digitos:function(){return soDigitos(campo.value);}};
 })();
 
 /* ---------- Lista de espera ---------- */
@@ -707,14 +781,18 @@ var ENDPOINT_LISTA_ESPERA='';
     e.preventDefault();
     erro.style.display='none';
 
+    var whatsOk=WHATS.validar();
     if(!form.checkValidity()){
-      form.reportValidity();
-      erro.textContent='Preencha os campos obrigatórios e marque a autorização para continuar.';
+      var primeiro=form.querySelector(':invalid');
+      if(primeiro===WHATS.campo)WHATS.campo.focus();
+      else form.reportValidity();
+      erro.textContent=whatsOk?'Preencha os campos obrigatórios e marque a autorização para continuar.':'Corrija os campos indicados para continuar.';
       erro.style.display='block';
       return;
     }
 
     var dados=Object.fromEntries(new FormData(form).entries());
+    dados.whatsapp=WHATS.digitos();                       // só dígitos, ex.: 11987654321
     dados.enviadoEm=new Date().toISOString();
     var btn=form.querySelector('button[type=submit]');
     btn.disabled=true;btn.textContent='Enviando...';

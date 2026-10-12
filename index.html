@@ -27,7 +27,7 @@
   --texto:"Figtree",system-ui,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scroll-padding-top:68px}
 body{font-family:var(--texto);font-size:1.0625rem;line-height:1.6;color:var(--tinta);background:var(--papel);-webkit-font-smoothing:antialiased}
 img,svg{display:block;max-width:100%}
 a{color:inherit}
@@ -185,34 +185,49 @@ summary::after{content:"+";position:absolute;right:.4rem;top:.9rem;font-size:1.7
 details[open] summary::after{transform:rotate(45deg)}
 details p{padding:0 0 1.3rem;color:var(--tinta-suave)}
 
-/* formulário */
-.lista-espera{background:var(--verde);color:#fff}
-.lista-espera .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(2rem,5vw,4.5rem);align-items:start}
-.lista-espera h2{color:#fff;max-width:14ch}
-.lista-espera .lead{color:#eaf7ea;margin-top:1.2rem}
-.lista-espera .beneficios{margin-top:1.6rem;list-style:none;display:grid;gap:.6rem;font-weight:600}
-.lista-espera .beneficios li{padding-left:1.7rem;position:relative}
-.lista-espera .beneficios li::before{content:"";position:absolute;left:.1rem;top:.3em;width:.5rem;height:.9rem;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(40deg)}
-form{background:var(--branco);color:var(--tinta);border-radius:var(--raio);padding:clamp(1.4rem,3vw,2.2rem);box-shadow:10px 10px 0 var(--verde-escuro)}
-.campo{display:grid;gap:.35rem;margin-bottom:1.1rem}
-.duas{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-label{font-weight:700;font-size:.95rem}
-input,select{font:inherit;padding:.8rem .9rem;border:2px solid var(--linha);border-radius:10px;background:var(--papel);color:var(--tinta);width:100%}
-input:focus,select:focus{outline:none;border-color:var(--verde);background:#fff}
-input:user-invalid{border-color:var(--vermelho)}
-.consent{display:flex;gap:.7rem;align-items:flex-start;font-size:.9rem;color:var(--tinta-suave);margin:.4rem 0 1.4rem}
-.consent input{width:22px;height:22px;margin-top:.15rem;accent-color:var(--verde);flex:none}
-.consent label{font-weight:500;font-size:.9rem}
-form .btn{width:100%}
-.ok{display:none;text-align:center;padding:1rem 0}
+/* lista de espera: perfumaria de luxo, cabe numa tela */
+.lista-espera{--serifa:"Newsreader",Georgia,"Times New Roman",serif;--ouro:#D8B365;--ouro-claro:#E4D8A2;--creme:#F8F5E8;--fundo:#07271A;--erro:#FF9C9C;
+  font-family:"DM Sans",var(--texto);color:var(--creme);background-color:var(--fundo);
+  background-image:radial-gradient(70% 90% at 100% 0%,rgba(216,179,101,.14) 0%,rgba(0,0,0,0) 60%),radial-gradient(80% 100% at 0% 100%,rgba(15,79,43,.55) 0%,rgba(0,0,0,0) 65%);
+  min-height:calc(100vh - 68px);min-height:calc(100svh - 68px);display:flex;align-items:center;padding:clamp(1.25rem,4.5vh,4rem) 0}
+.lista-espera .wrap{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(2rem,6vw,5.5rem);align-items:center}
+.le-eyebrow{font:500 13px "DM Sans",var(--texto);letter-spacing:.2em;text-transform:uppercase;color:var(--ouro-claro)}
+.lista-espera h2{font:400 clamp(2.2rem,4.2vw,3.5rem)/1.05 var(--serifa);letter-spacing:-.012em;color:var(--creme);max-width:14ch;margin:.8rem 0 0;text-wrap:balance}
+.le-filete{display:block;width:72px;height:1px;background:var(--ouro);margin:1.3rem 0}
+.lista-espera .lead{font-size:1.0625rem;line-height:1.65;color:rgba(248,245,232,.82);margin:0;max-width:30rem}
+.lista-espera .beneficios{margin-top:1.6rem;list-style:none;display:grid;max-width:30rem}
+.lista-espera .beneficios li{padding:.8rem 0 .8rem 1.9rem;position:relative;border-top:1px solid rgba(248,245,232,.14);font-size:.98rem;font-weight:500}
+.lista-espera .beneficios li:last-child{border-bottom:1px solid rgba(248,245,232,.14)}
+.lista-espera .beneficios li::before{content:"";position:absolute;left:.15rem;top:1.2rem;width:.42rem;height:.42rem;border:1px solid var(--ouro);transform:rotate(45deg)}
+
+.lista-espera form{position:relative;color-scheme:dark;background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.015));border:1px solid rgba(216,179,101,.5);border-radius:2px;padding:clamp(1.1rem,3.2vh,2.3rem) clamp(1.2rem,3vw,2.5rem);box-shadow:0 30px 60px -30px rgba(0,0,0,.65);backdrop-filter:blur(6px)}
+.lista-espera form::before{content:"";position:absolute;inset:6px;border:1px solid rgba(216,179,101,.2);pointer-events:none}
+.campo{display:grid;gap:.1rem;margin-bottom:clamp(.4rem,1.5vh,1.05rem)}
+.duas{display:grid;grid-template-columns:1fr 1fr;gap:clamp(.8rem,2vw,1.6rem)}
+.lista-espera label{font:500 11px "DM Sans",var(--texto);letter-spacing:.16em;text-transform:uppercase;color:var(--ouro-claro)}
+.lista-espera input,.lista-espera select{font:400 1rem "DM Sans",var(--texto);height:clamp(36px,5.2vh,46px);padding:0 .1rem;background:transparent;border:0;border-bottom:1px solid rgba(248,245,232,.35);border-radius:0;color:var(--creme);width:100%;transition:border-color .2s,box-shadow .2s}
+.lista-espera input::placeholder{color:rgba(248,245,232,.58)}
+.lista-espera input:focus,.lista-espera select:focus{outline:none;border-bottom-color:var(--ouro);box-shadow:0 1px 0 0 var(--ouro)}
+.lista-espera select{-webkit-appearance:none;appearance:none;cursor:pointer;padding-right:1.6rem;background-repeat:no-repeat;background-position:right .2rem center;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23D8B365' stroke-width='1.4'/%3E%3C/svg%3E")}
+.lista-espera select option{background:#0A2F1E;color:var(--creme)}
+.lista-espera input:-webkit-autofill{-webkit-text-fill-color:var(--creme);box-shadow:0 0 0 100px #0A2F1E inset;caret-color:var(--creme)}
+.lista-espera input:user-invalid,.lista-espera input[aria-invalid="true"]{border-bottom-color:var(--erro);box-shadow:0 1px 0 0 var(--erro)}
+.erro-campo{color:var(--erro);font-weight:500;font-size:.84rem;line-height:1.35;margin-top:.2rem}
+.consent{display:flex;gap:.8rem;align-items:flex-start;margin:clamp(.3rem,1.2vh,.8rem) 0 clamp(.7rem,2vh,1.3rem)}
+.lista-espera .consent input{-webkit-appearance:none;appearance:none;flex:none;width:18px;height:18px;margin-top:.2rem;padding:0;border:1px solid var(--ouro);border-radius:1px;background:transparent;position:relative;cursor:pointer;box-shadow:none}
+.lista-espera .consent input:checked{background:var(--ouro)}
+.lista-espera .consent input:checked::after{content:"";position:absolute;left:5px;top:1px;width:4px;height:9px;border:solid #0A2F1E;border-width:0 2px 2px 0;transform:rotate(40deg)}
+.lista-espera .consent label{font:400 .8rem/1.5 "DM Sans",var(--texto);letter-spacing:0;text-transform:none;color:rgba(248,245,232,.72)}
+.lista-espera form .btn{width:100%;height:clamp(44px,6.4vh,54px);padding:0;border-radius:2px;background:linear-gradient(135deg,#EBD9A8 0%,#D8B365 50%,#B8903F 100%);color:#0A2F1E;font:600 13px "DM Sans",var(--texto);letter-spacing:.2em;text-transform:uppercase;transition:filter .2s,transform .15s}
+.lista-espera form .btn:hover{filter:brightness(1.08)}
+.lista-espera form .btn:disabled{opacity:.6;cursor:wait}
+.erro-form{color:var(--erro);font-weight:500;font-size:.88rem;margin-bottom:.8rem;display:none}
+.ok{display:none;text-align:center;padding:1.5rem 0}
 .ok.mostrar{display:block}
-.ok .check{width:68px;height:68px;border-radius:50%;background:var(--verde);margin:0 auto 1rem;display:grid;place-items:center}
-.ok .check svg{width:34px;height:34px}
-.ok h3{font-size:1.6rem;color:var(--verde-escuro);margin-bottom:.5rem}
-.ok p{margin-inline:auto;color:var(--tinta-suave)}
-.erro-form{color:var(--vermelho);font-weight:600;font-size:.92rem;margin-bottom:1rem;display:none}
-.erro-campo{color:var(--vermelho);font-weight:600;font-size:.88rem;line-height:1.35}
-input[aria-invalid="true"]{border-color:var(--vermelho);background:#fff}
+.ok .check{width:64px;height:64px;border-radius:50%;border:1px solid var(--ouro);margin:0 auto 1.1rem;display:grid;place-items:center}
+.ok .check svg{width:28px;height:28px;stroke:var(--ouro)}
+.ok h3{font:400 2rem/1.1 var(--serifa);letter-spacing:0;color:var(--creme);margin-bottom:.6rem}
+.ok p{margin-inline:auto;color:rgba(248,245,232,.8)}
 
 /* rodapé */
 footer.rodape{background:var(--verde-escuro);color:#cfe6d3;padding:2.8rem 0;font-size:.92rem}
@@ -250,6 +265,10 @@ footer.rodape{background:var(--verde-escuro);color:#cfe6d3;padding:2.8rem 0;font
 
 @media (max-width:900px){
   .hero .wrap,.motivos,.lista-espera .wrap{grid-template-columns:1fr}
+  .lista-espera{display:block;min-height:0;padding:2.25rem 0 2.5rem}
+  .lista-espera .wrap{gap:1.75rem}
+  .lista-espera h2{max-width:none}
+  .lista-espera .beneficios{margin-top:1.1rem}
   .para-quem{grid-template-columns:1fr}
   .pq-foto{min-height:240px;background-position:80% 25%;background:linear-gradient(180deg,rgba(8,27,18,.25),rgba(8,27,18,.25)),url("assets/hero.jpg") 80% 25%/cover no-repeat;-webkit-mask-image:linear-gradient(180deg,#000 45%,transparent 100%);mask-image:linear-gradient(180deg,#000 45%,transparent 100%)}
   .pq-conteudo{padding:2rem 20px 3.5rem;max-width:none}
@@ -519,8 +538,10 @@ footer.rodape{background:var(--verde-escuro);color:#cfe6d3;padding:2.8rem 0;font
 <section class="lista-espera" id="lista-espera">
   <div class="wrap">
     <div>
+      <p class="le-eyebrow">Cursinho IF</p>
       <h2>Entre na lista de espera</h2>
-      <p class="lead">Preencha o formulário ao lado e garanta prioridade quando as primeiras turmas abrirem.</p>
+      <span class="le-filete" aria-hidden="true"></span>
+      <p class="lead">Preencha o formulário e garanta prioridade quando as primeiras turmas abrirem.</p>
       <ul class="beneficios">
         <li>Aviso antecipado da abertura das vagas</li>
         <li>Prioridade na matrícula</li>
@@ -575,7 +596,7 @@ footer.rodape{background:var(--verde-escuro);color:#cfe6d3;padding:2.8rem 0;font
               <label for="curso">Modalidade de interesse</label>
               <select id="curso" name="curso" required>
                 <option value="">Selecione</option>
-                <option>Técnico integrado ao ensino médio</option>
+                <option>Técnico integrado</option>
                 <option>Técnico subsequente</option>
                 <option>Ainda não sei</option>
               </select>
@@ -681,7 +702,11 @@ footer.rodape{background:var(--verde-escuro);color:#cfe6d3;padding:2.8rem 0;font
 /* ---------- Voltar ao topo ---------- */
 (function(){
   var btn=document.getElementById('voltar-topo');
-  function checar(){btn.classList.toggle('visivel',window.scrollY>400);}
+  var noFormulario=false;
+  function checar(){btn.classList.toggle('visivel',window.scrollY>400&&!noFormulario);}
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(i){noFormulario=i[0].isIntersecting;checar();},{threshold:0}).observe(document.getElementById('lista-espera'));
+  }
   window.addEventListener('scroll',checar,{passive:true});
   btn.addEventListener('click',function(){
     var reduz=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -811,7 +836,6 @@ var WHATS=(function(){
     if(!antes&&!depois)aplicar(novo,11);
     else aplicar(antes+novo+depois,(antes+novo).length);
   });
-  campo.addEventListener('blur',function(){if(campo.value)mostrar();});
   return {validar:function(){sincronizar();return mostrar();},campo:campo,digitos:function(){return soDigitos(campo.value);}};
 })();
 
